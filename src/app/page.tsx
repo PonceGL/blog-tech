@@ -17,7 +17,7 @@ export default async function Home() {
   const allPosts = await getPosts();
 
   return (
-    <main className="flex min-h-screen flex-col items-start justify-between p-24 gap-8">
+    <main className="w-full flex min-h-screen flex-col items-start justify-between p-4 lg:p-24 gap-8">
       <h1>BLOG</h1>
       {(allPosts.results as unknown as NotionDatabaseResult[]) && (
         <>
@@ -25,7 +25,7 @@ export default async function Home() {
             ({ id, cover, properties }) => (
               <article
                 key={id}
-                className="flex flex-col items-start justify-between p-4 gap-5"
+                className="w-full flex flex-col items-start justify-between gap-5"
               >
                 <h2 className="font-semibold text-2xl">
                   {properties.title.title[0].plain_text ?? "No title"}
@@ -36,7 +36,7 @@ export default async function Home() {
                       ? `/blog/${properties.slug.rich_text[0]?.plain_text}`
                       : "#"
                   }
-                  className="h-48 aspect-video relative"
+                  className="w-full max-h-48 aspect-video relative"
                 >
                   <Image
                     src={cover?.external?.url ?? defaultImageUrl}

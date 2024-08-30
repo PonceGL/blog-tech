@@ -1,4 +1,5 @@
 import { Client, collectPaginatedAPI } from "@notionhq/client";
+import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 export const notion = new Client({
   auth: process.env.NOTION_KEY,
@@ -36,7 +37,7 @@ export const getBlocks = async (id: string) => {
       block_id: id,
     });
 
-    return blocks;
+    return blocks as BlockObjectResponse[];
   } catch (error) {
     console.error("Error =>> ", error);
     throw new Error("Error fetching blocks");
