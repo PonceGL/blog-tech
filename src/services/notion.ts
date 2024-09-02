@@ -5,10 +5,12 @@ export const notion = new Client({
   auth: process.env.NOTION_KEY,
 });
 
-export const getDatabases = async () => {
+export const getDatabases = async (startCursor?: string) => {
   try {
     const databases = await notion.databases.query({
       database_id: process.env.NOTION_DB ?? "",
+      page_size: 20,
+      start_cursor: startCursor,
       filter: {
         property: "draft",
         checkbox: {

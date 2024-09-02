@@ -13,6 +13,8 @@ interface Props {
   params: { slug: string };
 }
 
+export const runtime = "edge";
+
 export const revalidate = revalidateTimeout;
 
 export const dynamicParams = false;

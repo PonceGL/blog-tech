@@ -5,6 +5,8 @@ import { NotionDatabaseResult } from "../types/notion";
 import Link from "next/link";
 import { defaultImageUrl, revalidateTimeout } from "../constants/ssr";
 
+export const runtime = "edge";
+
 const getPosts = unstable_cache(
   async () => {
     return await getDatabases();
@@ -15,10 +17,15 @@ const getPosts = unstable_cache(
 
 export default async function Home() {
   const allPosts = await getPosts();
+  console.log("====================================");
+  console.log("allPosts");
+  console.log(JSON.stringify(allPosts, null, 2));
+  console.log("allPosts.results");
+  console.log(allPosts.results.length);
+  console.log("====================================");
 
   return (
     <main className="w-full flex min-h-screen flex-col items-start justify-between p-4 lg:p-24 gap-8">
-      <h1>BLOG</h1>
       {(allPosts.results as unknown as NotionDatabaseResult[]) && (
         <>
           {(allPosts.results as unknown as NotionDatabaseResult[]).map(
