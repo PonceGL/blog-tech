@@ -9,7 +9,7 @@ export const getDatabases = async (startCursor?: string) => {
   try {
     const databases = await notion.databases.query({
       database_id: process.env.NOTION_DB ?? "",
-      page_size: 20,
+      page_size: 11,
       start_cursor: startCursor,
       filter: {
         property: "draft",

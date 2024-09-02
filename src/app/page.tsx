@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { getDatabases } from "../services/notion";
 import { unstable_cache } from "next/cache";
 import { NotionDatabaseResult } from "../types/notion";
-import Link from "next/link";
-import { defaultImageUrl, revalidateTimeout } from "../constants/ssr";
+import { revalidateTimeout } from "../constants/ssr";
+import { PostList } from "./components/postList";
 
 export const runtime = "edge";
 
@@ -19,44 +18,14 @@ export default async function Home() {
   const allPosts = await getPosts();
 
   return (
-    <main className="w-full flex min-h-screen flex-col items-start justify-between p-4 lg:p-24 gap-8">
+    <main className="w-full flex min-h-screen flex-col items-start justify-between p-4 gap-8">
+      {/* <main className="w-full min-h-screen max-w-[1500px] p-4 mx-auto grid grid-cols-1 gap-8 xl:grid-cols-[3fr,1fr]"> */}
       {(allPosts.results as unknown as NotionDatabaseResult[]) && (
-        <>
-          {(allPosts.results as unknown as NotionDatabaseResult[]).map(
-            ({ id, cover, properties }) => (
-              <article
-                key={id}
-                className="w-full flex flex-col items-start justify-between gap-5"
-              >
-                <h2 className="font-semibold text-2xl">
-                  {properties.title.title[0].plain_text ?? "No title"}
-                </h2>
-                <Link
-                  href={
-                    properties.slug.rich_text[0]?.plain_text
-                      ? `/blog/${properties.slug.rich_text[0]?.plain_text}`
-                      : "#"
-                  }
-                  className="w-full max-h-48 aspect-video relative"
-                >
-                  <Image
-                    src={cover?.external?.url ?? defaultImageUrl}
-                    alt={properties.title.title[0].plain_text}
-                    fill
-                    style={{
-                      objectFit: "cover",
-                    }}
-                  />
-                </Link>
-                <p>
-                  {properties.description.rich_text[0]?.plain_text ??
-                    "No description"}
-                </p>
-              </article>
-            )
-          )}
-        </>
+        <PostList
+          posts={allPosts.results as unknown as NotionDatabaseResult[]}
+        />
       )}
+      {/* <div className="w-full h-full min-h-32" /> */}
     </main>
   );
 }
