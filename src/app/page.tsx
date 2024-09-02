@@ -17,12 +17,6 @@ const getPosts = unstable_cache(
 
 export default async function Home() {
   const allPosts = await getPosts();
-  console.log("====================================");
-  console.log("allPosts");
-  console.log(JSON.stringify(allPosts, null, 2));
-  console.log("allPosts.results");
-  console.log(allPosts.results.length);
-  console.log("====================================");
 
   return (
     <main className="w-full flex min-h-screen flex-col items-start justify-between p-4 lg:p-24 gap-8">
