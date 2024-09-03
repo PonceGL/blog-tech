@@ -92,9 +92,7 @@ export default async function BlogPost({ params }: Props) {
             alt={post.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{
-              objectFit: "cover",
-            }}
+            className="object-cover"
           />
         </picture>
         <h1 className="my-8 font-semibold text-3xl text-left">{post.title}</h1>

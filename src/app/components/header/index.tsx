@@ -6,7 +6,7 @@ import Image from "next/image";
 export function Header() {
   return (
     <header className="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
-      <div className="w-full max-w-6xl mx-auto p-4 lg:px-0">
+      <div className="w-full max-w-6xl mx-auto p-4">
         <div className="flex items-center justify-star">
           <Link
             href="/"

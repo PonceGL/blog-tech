@@ -25,4 +25,5 @@ export enum SCREEN {
   POST = "post",
   SEARCH = "search",
   MENU = "menu",
+  NOT_FOUND = "not_found",
 }

@@ -1,6 +1,9 @@
 export const LOGO =
   "https://res.cloudinary.com/duibtuerj/image/upload/v1672858514/PonceGL/brand/ydkxhruq2ixgoapnxca1.png";
 
+export const IMAGE_404 =
+  "https://res.cloudinary.com/duibtuerj/image/upload/v1725382635/PonceGL/Utils/wnr6ofzsajvbwnjbgqbt.jpg";
+
 export const initValues = {
   title: "PonceGL",
   domain: "https://poncegl.vercel.app/",
