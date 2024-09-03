@@ -1,4 +1,5 @@
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { Relation } from "./notion";
 
 export interface PostData {
   id: string;
@@ -6,6 +7,7 @@ export interface PostData {
   cover: string;
   description: string;
   content: BlockObjectResponse[];
+  relatedBlogs: Relation[];
 }
 
 export interface PaginationParams {

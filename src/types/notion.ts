@@ -42,6 +42,7 @@ export type Properties = {
   date: DateClass;
   tags: Tags;
   title: Title;
+  related_blogs: RelatedBlogsRelation;
 };
 
 export type Author = {
@@ -117,6 +118,17 @@ export type Title = {
   id: string;
   type: string;
   title: RichText[];
+};
+
+export type RelatedBlogsRelation = {
+  id: string;
+  type: string;
+  relation: Relation[];
+  has_more: boolean;
+};
+
+export type Relation = {
+  id: string;
 };
 
 export type ColorBlock =

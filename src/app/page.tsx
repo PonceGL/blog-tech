@@ -20,7 +20,7 @@ export default async function Home() {
   // );
   // console.log("====================================");
   // console.log("tags");
-  // console.log(JSON.stringify(tags, null, 2));
+  // console.log(JSON.stringify(allPosts, null, 2));
   // console.log("====================================");
 
   return (

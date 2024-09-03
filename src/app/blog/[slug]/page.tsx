@@ -8,6 +8,7 @@ import { getMetadata } from "../../../utils/getMetadata";
 import { defaultImageUrl } from "../../../constants/ssr";
 import { notFound } from "next/navigation";
 import { NotionRenderer } from "@notion-render/client";
+import { RelatedBlogs } from "../../components/RelatedBlogs";
 
 interface Props {
   params: { slug: string };
@@ -24,6 +25,7 @@ const getPostData = async (slug: string): Promise<PostData> => {
   const post = (allPosts.results as unknown as NotionDatabaseResult[]).find(
     (post) => post.properties.slug.rich_text[0].plain_text === slug
   );
+
   return {
     id: post?.id ?? "",
     title: post?.properties.title.title[0].plain_text ?? "No title",
@@ -31,6 +33,7 @@ const getPostData = async (slug: string): Promise<PostData> => {
     description:
       post?.properties.description.rich_text[0]?.plain_text ?? "No description",
     content: await getBlocks(post?.id ?? ""),
+    relatedBlogs: post?.properties.related_blogs.relation ?? [],
   };
 };
 
@@ -86,6 +89,9 @@ export default async function BlogPost({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </article>
+      {post.relatedBlogs.length > 0 && (
+        <RelatedBlogs relations={post.relatedBlogs} />
+      )}
     </main>
   );
 }
