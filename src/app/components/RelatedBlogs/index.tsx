@@ -27,7 +27,7 @@ export async function RelatedBlogs({ relations }: Props) {
     .filter((post) => post);
 
   return (
-    <div className="w-full mt-8 md:max-w-4xl lg:max-w-6xl">
+    <div className="w-full mt-8 max-w-5xl">
       <h2 className="text-2xl font-bold mb-8">Relacionados</h2>
       {related.length > 0 && (
         <div className="w-full mx-auto grid justify-items-center gap-8 md:max-w-4xl md:grid-cols-[repeat(2,minmax(300px,500px))] lg:gap-6 lg:max-w-6xl lg:grid-cols-[repeat(3,minmax(300px,500px))]">

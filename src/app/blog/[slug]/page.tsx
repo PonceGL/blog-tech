@@ -1,5 +1,10 @@
 import React from "react";
-import { getBlocks, getDatabases, notion } from "../../../services/notion";
+import {
+  getBlocks,
+  getDatabases,
+  getTags,
+  notion,
+} from "../../../services/notion";
 import { NotionDatabaseResult } from "../../../types/notion";
 import { PostData } from "../../../types/post";
 import Image from "next/image";
@@ -9,6 +14,7 @@ import { defaultImageUrl } from "../../../constants/ssr";
 import { notFound } from "next/navigation";
 import { NotionRenderer } from "@notion-render/client";
 import { RelatedBlogs } from "../../components/RelatedBlogs";
+import { Tags } from "../../components/post/Tags";
 
 interface Props {
   params: { slug: string };
@@ -26,6 +32,8 @@ const getPostData = async (slug: string): Promise<PostData> => {
     (post) => post.properties.slug.rich_text[0].plain_text === slug
   );
 
+  const { tags } = getTags([post as NotionDatabaseResult]);
+
   return {
     id: post?.id ?? "",
     title: post?.properties.title.title[0].plain_text ?? "No title",
@@ -34,6 +42,7 @@ const getPostData = async (slug: string): Promise<PostData> => {
       post?.properties.description.rich_text[0]?.plain_text ?? "No description",
     content: await getBlocks(post?.id ?? ""),
     relatedBlogs: post?.properties.related_blogs.relation ?? [],
+    tags: tags ?? [],
   };
 };
 
@@ -64,6 +73,11 @@ export default async function BlogPost({ params }: Props) {
 
   if (!post) notFound();
 
+  console.log("====================================");
+  console.log("post tags");
+  console.log(JSON.stringify(post.tags, null, 2));
+  console.log("====================================");
+
   const renderer = new NotionRenderer({
     client: notion,
   });
@@ -72,9 +86,8 @@ export default async function BlogPost({ params }: Props) {
 
   return (
     <main className="w-full p-4 flex flex-col items-center justify-between">
-      <article className="w-full flex flex-col items-center justify-between gap-5">
-        <h1 className="font-semibold text-2xl">{post.title}</h1>
-        <picture className="w-full my-8 aspect-video relative">
+      <article className="w-full max-w-5xl flex flex-col items-center justify-between gap-5">
+        <picture className="w-full my-8 aspect-video rounded-lg relative overflow-hidden md:max-w-4xl lg:max-w-6xl">
           <Image
             src={post.cover}
             alt={post.title}
@@ -84,11 +97,19 @@ export default async function BlogPost({ params }: Props) {
             }}
           />
         </picture>
+        <h1 className="my-8 font-semibold text-5xl text-left">{post.title}</h1>
         <div
           className="w-full max-w-5xl flex flex-col prose prose-p:text-zinc-950 dark:prose-p:text-white prose-headings:text-zinc-950 dark:prose-headings:text-white prose-headings:font-semibold prose-h1:text-2xl  prose-h2:text-xl  prose-h3:text-lg prose-a:text-blue-500 prose-blockquote:text-zinc-900 dark:prose-blockquote:text-white prose-ul:pl-2 prose-li:list-none prose-li:text-zinc-950 dark:prose-li:text-white prose-figure:text-zinc-950 dark:prose-figure:text-white prose-figure:text-center prose-td:text-zinc-950 dark:prose-td:text-white prose-th:text-zinc-950 dark:prose-th:text-white"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </article>
+
+      {post.tags.length > 0 && (
+        <div className="w-full my-8 max-w-5xl ">
+          <Tags tags={post.tags} />
+        </div>
+      )}
+
       {post.relatedBlogs.length > 0 && (
         <RelatedBlogs relations={post.relatedBlogs} />
       )}

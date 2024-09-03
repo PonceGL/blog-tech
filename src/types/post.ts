@@ -1,5 +1,5 @@
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { Relation } from "./notion";
+import { MultiSelect, Relation } from "./notion";
 
 export interface PostData {
   id: string;
@@ -8,6 +8,7 @@ export interface PostData {
   description: string;
   content: BlockObjectResponse[];
   relatedBlogs: Relation[];
+  tags: MultiSelect[];
 }
 
 export interface PaginationParams {
