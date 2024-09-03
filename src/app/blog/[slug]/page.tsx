@@ -15,6 +15,8 @@ import { notFound } from "next/navigation";
 import { NotionRenderer } from "@notion-render/client";
 import { RelatedBlogs } from "../../components/RelatedBlogs";
 import { Tags } from "../../components/post/Tags";
+import { Analytics } from "../../components/analytics";
+import { ACTION, CATEGORY, SCREEN } from "../../../types/analytics";
 
 interface Props {
   params: { slug: string };
@@ -31,6 +33,8 @@ const getPostData = async (slug: string): Promise<PostData> => {
   const post = (allPosts.results as unknown as NotionDatabaseResult[]).find(
     (post) => post.properties.slug.rich_text[0].plain_text === slug
   );
+
+  if (!post) notFound();
 
   const { tags } = getTags([post as NotionDatabaseResult]);
 
@@ -73,11 +77,6 @@ export default async function BlogPost({ params }: Props) {
 
   if (!post) notFound();
 
-  console.log("====================================");
-  console.log("post tags");
-  console.log(JSON.stringify(post.tags, null, 2));
-  console.log("====================================");
-
   const renderer = new NotionRenderer({
     client: notion,
   });
@@ -85,27 +84,28 @@ export default async function BlogPost({ params }: Props) {
   const html = await renderer.render(...post.content);
 
   return (
-    <main className="w-full p-4 flex flex-col items-center justify-between">
-      <article className="w-full max-w-5xl flex flex-col items-center justify-between gap-5">
-        <picture className="w-full my-8 aspect-video rounded-lg relative overflow-hidden md:max-w-4xl lg:max-w-6xl">
+    <main className="w-full max-w-6xl mx-auto p-4 flex flex-col items-center justify-between">
+      <article className="w-full flex flex-col items-center justify-between gap-5">
+        <picture className="w-full my-8 aspect-video rounded-lg relative overflow-hidden">
           <Image
             src={post.cover}
             alt={post.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{
               objectFit: "cover",
             }}
           />
         </picture>
-        <h1 className="my-8 font-semibold text-5xl text-left">{post.title}</h1>
+        <h1 className="my-8 font-semibold text-3xl text-left">{post.title}</h1>
         <div
-          className="w-full max-w-5xl flex flex-col prose prose-p:text-zinc-950 dark:prose-p:text-white prose-headings:text-zinc-950 dark:prose-headings:text-white prose-headings:font-semibold prose-h1:text-2xl  prose-h2:text-xl  prose-h3:text-lg prose-a:text-blue-500 prose-blockquote:text-zinc-900 dark:prose-blockquote:text-white prose-ul:pl-2 prose-li:list-none prose-li:text-zinc-950 dark:prose-li:text-white prose-figure:text-zinc-950 dark:prose-figure:text-white prose-figure:text-center prose-td:text-zinc-950 dark:prose-td:text-white prose-th:text-zinc-950 dark:prose-th:text-white"
+          className="w-full flex flex-col prose prose-p:text-zinc-950 dark:prose-p:text-white prose-headings:text-zinc-950 dark:prose-headings:text-white prose-headings:font-semibold prose-h1:text-2xl  prose-h2:text-xl  prose-h3:text-lg prose-a:text-blue-500 prose-blockquote:text-zinc-900 dark:prose-blockquote:text-white prose-ul:pl-2 prose-li:list-none prose-li:text-zinc-950 dark:prose-li:text-white prose-figure:text-zinc-950 dark:prose-figure:text-white prose-figure:text-center prose-td:text-zinc-950 dark:prose-td:text-white prose-th:text-zinc-950 dark:prose-th:text-white"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </article>
 
       {post.tags.length > 0 && (
-        <div className="w-full my-8 max-w-5xl ">
+        <div className="w-full my-8">
           <Tags tags={post.tags} />
         </div>
       )}
@@ -113,6 +113,16 @@ export default async function BlogPost({ params }: Props) {
       {post.relatedBlogs.length > 0 && (
         <RelatedBlogs relations={post.relatedBlogs} />
       )}
+      <Analytics
+        event={{
+          action: ACTION.VIEW,
+          category: CATEGORY.VIEW,
+          label: `${ACTION.VIEW}_${SCREEN.POST}`,
+          params: {
+            title: post.title,
+          },
+        }}
+      />
     </main>
   );
 }

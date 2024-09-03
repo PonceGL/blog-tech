@@ -1,0 +1,1 @@
+export { tagEvent } from "./tagEvent";

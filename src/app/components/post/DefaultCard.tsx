@@ -31,6 +31,7 @@ export function DefaultCard({ post, className }: Props): JSX.Element {
             src={cover?.external?.url ?? defaultImageUrl}
             alt={properties.title.title[0].plain_text}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{
               objectFit: "cover",
             }}

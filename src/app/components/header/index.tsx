@@ -6,7 +6,7 @@ import Image from "next/image";
 export function Header() {
   return (
     <header className="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
-      <div className="w-full max-w-[1500px] mx-auto p-4 md:py-8">
+      <div className="w-full max-w-6xl mx-auto p-4 lg:px-0">
         <div className="flex items-center justify-star">
           <Link
             href="/"
@@ -17,6 +17,7 @@ export function Header() {
                 src={LOGO}
                 alt={`${initValues.title} Logo`}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>
