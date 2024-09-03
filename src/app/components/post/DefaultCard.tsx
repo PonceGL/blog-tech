@@ -4,18 +4,17 @@ import { NotionDatabaseResult } from "../../../types/notion";
 import Link from "next/link";
 import Image from "next/image";
 import { defaultImageUrl } from "../../../constants/ssr";
-import { ButtonLink } from "../buttons/link";
-import { Arrow } from "../icons/arrow";
+import { getTags } from "../../../services/notion";
+import { Tags } from "./Tags";
 
 interface Props {
   post: NotionDatabaseResult;
   className?: string;
 }
 
-export function DefaultCard({
-  post: { cover, properties },
-  className,
-}: Props): JSX.Element {
+export function DefaultCard({ post, className }: Props): JSX.Element {
+  const { properties, cover } = post;
+  const { tags } = getTags([post]);
   const link = properties.slug.rich_text[0]?.plain_text
     ? `/blog/${properties.slug.rich_text[0]?.plain_text}`
     : "#";
@@ -47,10 +46,9 @@ export function DefaultCard({
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {properties.description.rich_text[0]?.plain_text ?? "No description"}
         </p>
-        <ButtonLink link={link}>
-          <span>Leer más</span>
-          <Arrow />
-        </ButtonLink>
+        <div className="w-full flex justify-between items-center gap-4">
+          {tags.length > 0 && <Tags tags={tags} />}
+        </div>
       </div>
     </article>
   );

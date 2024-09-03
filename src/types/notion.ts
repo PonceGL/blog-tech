@@ -87,7 +87,7 @@ export type Annotations = {
   strikethrough: boolean;
   underline: boolean;
   code: boolean;
-  color: string;
+  color: ColorBlock;
 };
 
 export type Text = {
@@ -110,7 +110,7 @@ export type Tags = {
 export type MultiSelect = {
   id: string;
   name: string;
-  color: string;
+  color: ColorBlock;
 };
 
 export type Title = {
@@ -118,3 +118,15 @@ export type Title = {
   type: string;
   title: RichText[];
 };
+
+export type ColorBlock =
+  | "blue"
+  | "brown"
+  | "default"
+  | "gray"
+  | "green"
+  | "orange"
+  | "pink"
+  | "purple"
+  | "red"
+  | "yellow";

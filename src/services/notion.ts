@@ -2,7 +2,7 @@ import { Client, collectPaginatedAPI } from "@notionhq/client";
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { PaginationParams } from "../types/post";
 import { postPerPage } from "../constants/ssr";
-import { NotionDatabaseResult } from "../types/notion";
+import { MultiSelect, NotionDatabaseResult } from "../types/notion";
 
 export const notion = new Client({
   auth: process.env.NOTION_KEY,
@@ -18,9 +18,9 @@ export const getDatabases = async (
       page_size: pageSize,
       start_cursor: startCursor,
       filter: {
-        property: "draft",
+        property: "published",
         checkbox: {
-          equals: false,
+          equals: true,
         },
       },
       sorts: [
@@ -88,5 +88,5 @@ export const getTags = (post: NotionDatabaseResult[]) => {
   const setObj = new Set(tags.map((value) => JSON.stringify(value, null, 2)));
   const output = Array.from(setObj).map((value: string) => JSON.parse(value));
 
-  return { tags: output };
+  return { tags: output as MultiSelect[] };
 };

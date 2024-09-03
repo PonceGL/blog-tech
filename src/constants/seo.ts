@@ -1,5 +1,3 @@
-import { Metadata } from "next";
-
 export const LOGO =
   "https://res.cloudinary.com/duibtuerj/image/upload/v1672858514/PonceGL/brand/ydkxhruq2ixgoapnxca1.png";
 
