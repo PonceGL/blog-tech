@@ -5,7 +5,7 @@ import { PostData } from "../../../types/post";
 import Image from "next/image";
 import { Metadata } from "next";
 import { getMetadata } from "../../../utils/getMetadata";
-import { defaultImageUrl, revalidateTimeout } from "../../../constants/ssr";
+import { defaultImageUrl } from "../../../constants/ssr";
 import { notFound } from "next/navigation";
 import { NotionRenderer } from "@notion-render/client";
 
@@ -15,12 +15,12 @@ interface Props {
 
 export const runtime = "edge";
 
-export const revalidate = revalidateTimeout;
+export const revalidate = 60;
 
 export const dynamicParams = false;
 
 const getPostData = async (slug: string): Promise<PostData> => {
-  const allPosts = await getDatabases();
+  const allPosts = await getDatabases(undefined, 1000);
   const post = (allPosts.results as unknown as NotionDatabaseResult[]).find(
     (post) => post.properties.slug.rich_text[0].plain_text === slug
   );
@@ -84,7 +84,7 @@ export default async function BlogPost({ params }: Props) {
         <div
           className="w-full max-w-5xl flex flex-col prose prose-p:text-zinc-950 dark:prose-p:text-white prose-headings:text-zinc-950 dark:prose-headings:text-white prose-headings:font-semibold prose-h1:text-2xl  prose-h2:text-xl  prose-h3:text-lg prose-a:text-blue-500 prose-blockquote:text-zinc-900 dark:prose-blockquote:text-white prose-ul:pl-2 prose-li:list-none prose-li:text-zinc-950 dark:prose-li:text-white prose-figure:text-zinc-950 dark:prose-figure:text-white prose-figure:text-center prose-td:text-zinc-950 dark:prose-td:text-white prose-th:text-zinc-950 dark:prose-th:text-white"
           dangerouslySetInnerHTML={{ __html: html }}
-        ></div>
+        />
       </article>
     </main>
   );

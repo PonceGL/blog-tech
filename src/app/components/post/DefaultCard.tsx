@@ -1,4 +1,5 @@
 import React from "react";
+import { twMerge } from "tailwind-merge";
 import { NotionDatabaseResult } from "../../../types/notion";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,7 +21,10 @@ export function DefaultCard({
     : "#";
   return (
     <article
-      className={`max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${className}`}
+      className={twMerge(
+        "w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700",
+        className
+      )}
     >
       <Link href={link} className="w-full">
         <div className="w-full aspect-video rounded-t-lg overflow-hidden relative">

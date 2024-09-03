@@ -1,11 +1,12 @@
+import type { PropsWithChildren } from "react";
 import { NotionDatabaseResult } from "../../types/notion";
 import { DefaultCard, MainCard } from "./post";
 
-interface Props {
+interface Props extends PropsWithChildren {
   posts: NotionDatabaseResult[];
 }
 
-export function PostList({ posts }: Props): JSX.Element {
+export function PostList({ posts, children }: Props): JSX.Element {
   const firstPost = posts[0];
   const lastPost = posts.filter((p) => p.id !== firstPost.id);
 
@@ -14,8 +15,9 @@ export function PostList({ posts }: Props): JSX.Element {
       <MainCard post={firstPost} className="hidden md:col-span-2" />
       <DefaultCard post={firstPost} className="block md:hidden" />
       {lastPost.map((post) => (
-        <DefaultCard key={post.id} post={post} className="block :" />
+        <DefaultCard key={post.id} post={post} />
       ))}
+      {children}
     </div>
   );
 }

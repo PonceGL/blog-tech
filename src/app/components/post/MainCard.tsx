@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { NotionDatabaseResult } from "../../../types/notion";
+import { twMerge } from "tailwind-merge";
 import Image from "next/image";
+import { NotionDatabaseResult } from "../../../types/notion";
 import { defaultImageUrl } from "../../../constants/ssr";
 import { ButtonLink } from "../buttons/link";
 import { Arrow } from "../icons/arrow";
@@ -20,7 +21,10 @@ export function MainCard({
 
   return (
     <article
-      className={`w-full md:grid md:grid-cols-[1fr,2fr] bg-white border border-gray-200 shadow dark:border-gray-700 dark:bg-gray-800 rounded-lg overflow-hidden ${className}`}
+      className={twMerge(
+        "w-full md:grid md:grid-cols-[1fr,2fr] bg-white border border-gray-200 shadow dark:border-gray-700 dark:bg-gray-800 rounded-lg overflow-hidden",
+        className
+      )}
     >
       <Link href={link} className="w-full aspect-square lg:aspect-[2/3]">
         <div className="w-full h-full relative">
@@ -42,7 +46,7 @@ export function MainCard({
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {properties.description.rich_text[0]?.plain_text ?? "No description"}
         </p>
-        <ButtonLink link={link}>
+        <ButtonLink link={link} className="w-fit">
           <span>Leer más</span>
           <Arrow />
         </ButtonLink>

@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "www.notion.so",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
         hostname: "res.cloudinary.com",
         pathname: "**",
       },

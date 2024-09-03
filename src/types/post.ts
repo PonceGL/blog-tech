@@ -7,3 +7,8 @@ export interface PostData {
   description: string;
   content: BlockObjectResponse[];
 }
+
+export interface PaginationParams {
+  id: string;
+  next: string;
+}
